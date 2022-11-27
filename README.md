@@ -5,3 +5,8 @@ Test task using this technologies:
 * STL
 * CMake 
 * Makefiles
+
+<br/>
+
+## Result :
+![Alt text](./doc/Result.png "a title")

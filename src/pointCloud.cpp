@@ -15,24 +15,12 @@ PointCloud::PointCloud (cadcam::mwTPoint3d<double> refPoint,
                         unsigned long nz,
                         double delta)
     : mNx(nx), mNy (ny), mNz(nz),
-    mIsVisible(nx * ny * nz), mPointsArray(nx * ny * nz)
+    mDelta(delta), mRefPoint(refPoint),
+    mIsVisible(nx * ny * nz)
 {
-    mDelta = delta;
-
     for(unsigned long i = 0; i < nx * ny * nz; i++)
         mIsVisible[i] = true;
 
-    for(unsigned long x = 0; x < nx; x++)
-    {
-        for(unsigned long y = 0; y < ny; y++)
-        {
-            for(unsigned long z = 0; z < nz; z++)
-            {
-                cadcam::mwTPoint3d<double> point (delta*x, delta*y, delta*z);
-                this->SetPoint(x, y, z, point + refPoint);
-            }
-        }
-    }
 }
 
 void PointCloud::DoOnIteration(IterationFunc& func, Sector sector)

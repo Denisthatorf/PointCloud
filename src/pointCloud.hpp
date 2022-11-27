@@ -65,17 +65,11 @@ public:
         return mIsVisible.at(x * mNy * mNz + y * mNz + z);
     }
 
-    inline const cadcam::mwTPoint3d<double>& GetPoint (
+    inline const cadcam::mwTPoint3d<double> GetPoint (
         unsigned long x, unsigned long y, unsigned long z) const
     {
-        return mPointsArray.at(x * mNy * mNz + y * mNz + z); 
-    }
-
-    inline void SetPoint(
-        unsigned long x, unsigned long y, unsigned long z,
-        cadcam::mwTPoint3d<double> point)
-    {
-        mPointsArray.at(x * mNy * mNz + y * mNz + z) = point;
+        cadcam::mwTPoint3d<double> point (mDelta*x, mDelta*y, mDelta*z);
+        return point + mRefPoint;
     }
 
 private:
@@ -83,13 +77,13 @@ private:
     void SetSecotorInRange(Sector& sector);
 
 private:
+    cadcam::mwTPoint3d<double> mRefPoint;
     unsigned long mNx;
     unsigned long mNy;
     unsigned long mNz;
     double mDelta;
 
     std::vector<bool> mIsVisible;
-    std::vector<cadcam::mwTPoint3d<double>> mPointsArray;
 };
 
 #endif
