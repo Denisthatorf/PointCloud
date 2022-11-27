@@ -14,15 +14,13 @@ PointCloud::PointCloud (cadcam::mwTPoint3d<double> refPoint,
                         unsigned long ny,
                         unsigned long nz,
                         double delta)
-    : mNx(nx), mNy (ny), mNz(nz)
+    : mNx(nx), mNy (ny), mNz(nz),
+    mIsVisible(nx * ny * nz), mPointsArray(nx * ny * nz)
 {
     mDelta = delta;
 
-    unsigned long size = nx * ny * nz;
-    mPointsArray = new cadcam::mwTPoint3d<double>[size];
-
-    mIsVisible = new bool[size];
-    memset(mIsVisible, 1, size * sizeof(bool));
+    for(unsigned long i = 0; i < nx * ny * nz; i++)
+        mIsVisible[i] = true;
 
     for(unsigned long x = 0; x < nx; x++)
     {
@@ -37,12 +35,6 @@ PointCloud::PointCloud (cadcam::mwTPoint3d<double> refPoint,
     }
 }
 
-PointCloud::~PointCloud() 
-{
-    delete [] mPointsArray;
-}
-
-    
 void PointCloud::DoOnIteration(IterationFunc& func, Sector sector)
 {
     for (unsigned long x = sector.s_x; x < sector.e_x; x++)

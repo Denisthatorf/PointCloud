@@ -1,6 +1,7 @@
 #ifndef MATH_HELPER_HPP
 #define MATH_HELPER_HPP
 #include <mwTPoint3d.hpp>
+#include <vector>
 
 //In this case is no need to make full implementation
 template<typename T>
@@ -8,11 +9,8 @@ class Matrix2D
 {
 public:
     inline Matrix2D(unsigned long nx, unsigned long ny)
-        : mNx(nx), mNy(ny)
-    { mMatrix = new T[nx*ny]; }
-
-    inline ~Matrix2D() 
-        { delete [] mMatrix;}
+        : mNx(nx), mNy(ny), mMatrix(nx*ny)
+    {}
 
 public:
     inline T& GetElement(unsigned long x, unsigned long y)
@@ -20,7 +18,7 @@ public:
         //unsigned long givenIndex = x * mNy + y;
         //if(givenIndex >= mNx * mNy)
         //    throw misc::mwIdxRangeException(mSize, givenIndex);
-        return *( mMatrix + x * mNy + y);
+        return mMatrix.at(x * mNy + y);
     }
 
     inline T& GetElement(unsigned long index)
@@ -28,14 +26,14 @@ public:
         //unsigned long givenIndex = x * mNy + y;
         //if(givenIndex >= mNx * mNy)
         //    throw misc::mwIdxRangeException(mSize, givenIndex);
-        return *(mMatrix + index);
+        return mMatrix.at(index);
     }
 
     inline unsigned long GetSize()
         { return  mNx * mNy; }
     
 private:
-    T* mMatrix;
+    std::vector<T> mMatrix;
     unsigned long mNx;
     unsigned long mNy;
 

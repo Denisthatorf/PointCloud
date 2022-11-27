@@ -8,6 +8,7 @@
 
 #include "cuboid.hpp"
 #include <mathHelper.hpp>
+#include <vector>
 
 struct Sector
 {
@@ -39,7 +40,6 @@ public:
                 unsigned long ny,
                 unsigned long nz,
                 double delta);
-    ~PointCloud();
 
     PointCloud(const PointCloud&) = delete;
     PointCloud &operator=( const PointCloud&) = delete;
@@ -56,33 +56,26 @@ public:
     inline void MakePointInvisible(
         unsigned long x, unsigned long y, unsigned long z)
     {
-        //unsigned long givenIndex = x * mNy * mNz + y * mNz + z;
-        //if(givenIndex >= mSize)
-        //    throw misc::mwIdxRangeException(mSize, givenIndex);
-        *(mIsVisible + x * mNy * mNz + y * mNz + z) = false;
+        mIsVisible.at(x * mNy * mNz + y * mNz + z) = false;
     }
 
     inline bool IsPointVisible(
         unsigned long x, unsigned long y, unsigned long z) const
     {
-        return *(mIsVisible + x * mNy * mNz + y * mNz + z);
+        return mIsVisible.at(x * mNy * mNz + y * mNz + z);
     }
 
     inline const cadcam::mwTPoint3d<double>& GetPoint (
         unsigned long x, unsigned long y, unsigned long z) const
     {
-        //May slow down the program a bit
-        //unsigned long givenIndex = x * mNy * mNz + y * mNz + z;
-        //if(givenIndex >= mSize)
-        //    throw misc::mwIdxRangeException(mSize, givenIndex);
-        return *(mPointsArray + x * mNy * mNz + y * mNz + z); 
+        return mPointsArray.at(x * mNy * mNz + y * mNz + z); 
     }
 
     inline void SetPoint(
         unsigned long x, unsigned long y, unsigned long z,
         cadcam::mwTPoint3d<double> point)
     {
-        *(mPointsArray + x * mNy * mNz + y * mNz + z) = point;
+        mPointsArray.at(x * mNy * mNz + y * mNz + z) = point;
     }
 
 private:
@@ -95,8 +88,8 @@ private:
     unsigned long mNz;
     double mDelta;
 
-    bool* mIsVisible;
-    cadcam::mwTPoint3d<double>* mPointsArray;
+    std::vector<bool> mIsVisible;
+    std::vector<cadcam::mwTPoint3d<double>> mPointsArray;
 };
 
 #endif
